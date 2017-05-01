@@ -6,28 +6,28 @@ $(document).ready(function(){
       type: 'GET',
       url: '/retrieveTasks',
       success: function(response){
-        console.log('back from get call:', response);
-        $('#toDoItems').html='';//clear div
-        var outputText = '';
-        for (var i = 0; i < response.length; i++) {
-          if(response[i].completed === true){
-            outputText += '<p class="remove">' + response[i].task + ' ' + '<button class="deleteTaskButton" data="' + response[i].id + '">Delete</button>';
-            $(this).hide();
-          }//end if
-          else {
-            outputText += '<p class="donski">' + response[i].task + ' ' + '<button id="allDone" data="' + response[i].id + '">Complete</button>' + ' ' + '<button class="deleteTaskButton" data="' + response[i].id + '">Delete</button>';
-          }///End else
-        }//End for loop
-        $('#toDoItems').html(outputText);
-      }//end success function
-    });//End ajax
-  };//Wnd GET function
+      console.log('return from get call:', response);
+      $('#needCompleted').html='';//clear div
+      var outputText = '';
+      for (var i = 0; i < response.length; i++) {
+        if(response[i].completed === true){
+          outputText += '<p class="remove">' + response[i].task + ' ' + '<button class="deleteTaskButton" data="' + response[i].id + '">Delete</button>';
+          $(this).hide();
+        }//end if
+        else {
+          outputText += '<p class="donski">' + response[i].task + ' ' + '<button id="allDone" data="' + response[i].id + '">Complete</button>' + ' ' + '<button class="deleteTaskButton" data="' + response[i].id + '">Delete</button>';
+        }///End else
+      }//End for loop
+    $('#needCompleted').html(outputText);
+  }//end success function
+});//End ajax
+};//Wnd GET function
 
   var createTask = function(){
     console.log('in createTask');
     //Package Obj to db
     var sendObject={
-      task: $('#toDoItem').val(),
+      task: $('#willDo').val(),
       status: "false"
     };//end sendObject
     $.ajax({
@@ -47,9 +47,9 @@ $(document).ready(function(){
 
   $('#createTask').on('click', function(){
     createTask();
-    $('#toDoItem').val('');
+    $('#needCompleted').val('');
   });//end addItemButton on click
-  $('#toDoItems').on('click', '#allDone',function(){
+  $('#needCompleted').on('click', '#allDone',function(){
     $(this).parent().toggleClass('completed');
     $(this).hide();
     var status = $(this).attr('data');
@@ -69,7 +69,7 @@ $(document).ready(function(){
     });//end ajax
   });//end
 
-  $('#toDoItems').on('click', '.deleteTaskButton',function(){
+  $('#needCompleted').on('click', '.deleteTaskButton',function(){
     if(confirm("Confirm Delete")=== true){
       $(this).parent().hide();
       var delObject = {
